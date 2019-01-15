@@ -7,14 +7,17 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 
 public class DriverUtils {
 
 	static WebDriver driver = null;
 
 	/**
+	 * By default it creates an object to Chrome  Browser
 	 * @author ahb
-	 * @return
+	 * @return Chrome browser object 
 	 */
 	public static WebDriver getMyDriver() {
 		try {
@@ -24,11 +27,53 @@ public class DriverUtils {
 		}
 		System.setProperty("webdriver.chrome.driver", "driver\\chromedriver.exe");
 		driver = new ChromeDriver();
+		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		return driver;
 
 	}
 
+	/**
+	 * 
+	 * @param type - chrome,ff,ie
+	 * @return
+	 */
+	public static WebDriver getMyDriver(String type)
+	{
+		try {
+			Runtime.getRuntime().exec("TaskKill /F /IM chromedriver.exe");
+			Runtime.getRuntime().exec("TaskKill /F /IM geckodriver.exe");
+			Runtime.getRuntime().exec("TaskKill /F /IM IEDriverServer.exe");
+		} catch (IOException e) {
+			System.out.println("Exception while killing the driver..");
+			e.printStackTrace();
+		}
+		
+		switch(type.toLowerCase())
+		{
+		case "chrome":
+			System.setProperty("webdriver.chrome.driver", "driver\\chromedriver.exe");
+			driver = new ChromeDriver();
+			break;
+
+		case "ff":
+			System.setProperty("webdriver.gecko.driver", "driver\\geckodriver.exe");
+			driver = new FirefoxDriver();
+			break;
+		case "ie":
+			System.setProperty("webdriver.ie.driver", "driver\\IEDriverServer.exe");
+			driver= new InternetExplorerDriver();
+			break;
+
+		default:
+			System.out.println("Please pass valid browser type.. Refer FrameWork Document!!!");
+			break;
+		}
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		return driver;
+		
+	}
 	/**
 	 * 
 	 * @param locator
