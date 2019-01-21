@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" name="Default suite">
+	<test thread-count="5" verbose="2" name="Test test">
+		<groups>
+			<run>
+				<include name="yamaha" />
+				<include name="honda" />
+				<include name="mahendra" />
+			</run>
+		</groups>
+
+		<classes>
+			<class name="com.testng.group.Bikes" />
+			<class name="com.testng.group.Cars" />
+		</classes>
+	</test> <!-- Default test -->
+</suite> <!-- Default suite -->

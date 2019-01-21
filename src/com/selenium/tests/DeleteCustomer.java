@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.selenium.utils.ActitimeUtils;
+import com.selenium.utils.ConfigReader;
 import com.selenium.utils.DriverUtils;
 
 public class DeleteCustomer {
@@ -13,8 +14,8 @@ public class DeleteCustomer {
 	public static void main(String[] args) {
 		
 		WebDriver driver = DriverUtils.getMyDriver();
-		ActitimeUtils.launch();
-		ActitimeUtils.login("admin", "manager");
+		ActitimeUtils.launch(ConfigReader.getUrl());
+		ActitimeUtils.login(ConfigReader.getUserName(),ConfigReader.getPassword());
 		ActitimeUtils.selectModule("TASKS");
 		
 		Actions act =  new Actions(driver);

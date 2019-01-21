@@ -1,18 +1,27 @@
 package com.selenium.utils;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Platform;
+import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class DriverUtils {
 
-	static WebDriver driver = null;
+	public static WebDriver driver = null;
 
 	/**
 	 * By default it creates an object to Chrome  Browser
@@ -69,10 +78,49 @@ public class DriverUtils {
 			System.out.println("Please pass valid browser type.. Refer FrameWork Document!!!");
 			break;
 		}
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(ConfigReader.getTimeOut(), TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		return driver;
 		
+	}
+	
+	
+	
+	public static  WebDriver getRemoteDriver(String nodeUrl,String browser) throws MalformedURLException
+	{
+		switch(browser.toLowerCase())
+		{
+		case "chrome":
+			ChromeOptions options = new ChromeOptions();
+			options.setCapability(CapabilityType.PLATFORM_NAME, Platform.WINDOWS);
+			options.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+			options.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+			options.addArguments("disable-infobars");
+			driver = new RemoteWebDriver(new URL(nodeUrl),options);
+			break;
+		case "ff":
+			FirefoxOptions foptions = new FirefoxOptions();
+			foptions.addPreference("browserName", "firefox");
+			foptions.addPreference("browserversion", "55.0.2");
+			foptions.addPreference("network.proxy.type", 0);
+			foptions.setAcceptInsecureCerts(true);
+			driver = new RemoteWebDriver(new URL(nodeUrl),foptions);
+			break;
+		case "ie":
+			InternetExplorerOptions ioptions = new InternetExplorerOptions();
+			ioptions.setCapability(CapabilityType.PLATFORM_NAME, Platform.WINDOWS);
+			ioptions.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.ACCEPT);
+			ioptions.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+			driver = new RemoteWebDriver(new URL(nodeUrl),ioptions);
+			break;
+
+		default:
+			System.out.println("Please pass valid browser type.. Refer FrameWork Document!!!");
+			break;
+		}
+		driver.manage().timeouts().implicitlyWait(ConfigReader.getTimeOut(), TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		return driver;
 	}
 	/**
 	 * 

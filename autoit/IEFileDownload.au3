@@ -1,0 +1,7 @@
+WinWaitActive("Internet Explorer")
+Sleep(1000)
+ControlClick("Internet Explorer","Save &as","Button3")
+Sleep(3000)
+ControlSetText("Save As","","Edit1","D:\ITAAutomation\Eclipse_WS\SeleniumPractice\autoDownloads\win32_autodonloadIE.zip")
+Sleep(5000)
+ControlClick("Save As","&Save","Button1")
