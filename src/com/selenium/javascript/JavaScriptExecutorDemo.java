@@ -17,6 +17,7 @@ public class JavaScriptExecutorDemo {
 		JavascriptExecutor js = (JavascriptExecutor)driver;
 	//	js.executeScript("window.scrollTo(0, 500);");
 		js.executeScript("arguments[0].scrollIntoView();", driver.findElement(By.id("name")));
+		js.executeScript("arguments[0].click();", driver.findElement(By.id("name")));
 		
 		}
 }

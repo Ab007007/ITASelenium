@@ -2,8 +2,10 @@ package com.selenium.utils;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.selenium.waits.WebdriverWaitDemo;
 
@@ -23,7 +25,9 @@ public class ActitimeUtils extends DriverUtils {
 		else
 		{
 			driver.get("http://localhost:8080/login.do");
+			Assert.assertEquals(driver.getTitle(), GlobalVariables.LOGIN_PAGE_TITLE);
 		}
+		ActitimeUtils.takeScreenShot();
 		System.out.println("launching the applicaiton ..." + url);
 	
 	}
@@ -37,15 +41,21 @@ public class ActitimeUtils extends DriverUtils {
 	public static void login(String username, String password)
 	{
 		System.out.println("login function is called " + username + " : " + password);
-		driver.findElement(By.id("username")).sendKeys(username);
-		driver.findElement(By.name("pwd")).sendKeys(password);
-		driver.findElement(By.id("loginButton")).click();
+//		driver.findElement(By.id("username")).sendKeys(username);
+//		driver.findElement(By.name("pwd")).sendKeys(password);
+//		driver.findElement(By.id("loginButton")).click();
+		typeOnEle("id", "username", username);
+		typeOnEle("name", "pwd", password);
+		clickOnEle("id", "loginButton");
+		
+		
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		Assert.assertEquals(driver.getTitle(), GlobalVariables.HOME_PAGE_TITLE);
 	}
 	
 	/**
@@ -108,6 +118,24 @@ public class ActitimeUtils extends DriverUtils {
 		System.out.println("toast message dissappeared..");
 	}
 	
+	
+	
+	public static void createCustomerinOnlineAPP(String customerName,String customerDesc)
+	{
+		System.out.println("Creating a customer with " + customerName + " and " + customerDesc);
+		typeOnEle("xpath", "//div[@class='customerNameDiv']/input", customerName);
+		typeOnEle("xpath", "//textarea[@placeholder='Enter Customer Description']", customerDesc);
+		WebDriverWait wait2 = new WebDriverWait(driver, 20);
+		WebElement ele = wait2.until(ExpectedConditions.elementToBeClickable(getMyElement("classname", "commitButtonPlaceHolder")));
+		ele.click();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * function which takes care of logging out of the applicaiton
 	 * and close the browser
@@ -116,7 +144,7 @@ public class ActitimeUtils extends DriverUtils {
 	{
 		System.out.println("logging out of the applicaiton and closing the browser");
 		clickOnEle("id", "logoutLink");
-		driver.close();
+//		driver.close();
 	}
 	
 	/**
@@ -130,6 +158,7 @@ public class ActitimeUtils extends DriverUtils {
 		typeOnEle("id", "projectPopup_projectNameField", projectName);
 		clickOnEle("xpath", "//button[contains(text(),'Please')]");
 		clickOnEle("linktext", customerName);
+//		clickOnEle("xpath", "//div[text()='" +customerName + "']");
 		typeOnEle("name", "projectDescriptionField"	, projectDesc);
 		clickOnEle("id", "projectPopup_commitBtn");
 		

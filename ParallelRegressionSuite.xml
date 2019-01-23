@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" name="Regression" parallel="tests" thread-count="2">
+	<test thread-count="5" verbose="2" name="CreatecustomerTest">
+		<classes>
+			<class name="com.selenium.tests.ParallelCustomer" />
+		</classes>
+	</test> <!-- Default test -->
+	<test thread-count="5" verbose="2" name="CreateProjectTest">
+		<classes>
+			<class name="com.selenium.tests.ParallelProject" />
+		</classes>
+	</test> <!-- Default test -->
+</suite> <!-- Default suite -->
